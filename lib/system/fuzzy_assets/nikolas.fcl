@@ -82,26 +82,6 @@ RULEBLOCK No1
 			left_midle_sensor IS online AND
 			left_sensor IS online THEN 
 				motor_right IS fast;
-
-	/*
-	// temperature ok (the best scenario)
-	RULE 1 : IF sec_fuzzy_temperature IS ok THEN sec_fuzzy_current IS high;
-	RULE 2 : IF sec_fuzzy_temperature IS ok AND sec_fuzzy_soc IS discharged THEN sec_fuzzy_current IS high;
-	RULE 3 : IF sec_fuzzy_temperature IS ok AND sec_fuzzy_soc IS charging THEN sec_fuzzy_current IS medium;
-	RULE 4 : IF sec_fuzzy_temperature IS ok AND sec_fuzzy_soc IS charged THEN sec_fuzzy_current IS medium;
-	
-	// temperature warm
-	RULE 5 : IF sec_fuzzy_temperature IS warm THEN sec_fuzzy_current IS low;
-	RULE 6 : IF sec_fuzzy_temperature IS warm AND sec_fuzzy_soc IS discharged THEN sec_fuzzy_current IS low;
-	RULE 7 : IF sec_fuzzy_temperature IS warm AND sec_fuzzy_soc IS charging THEN sec_fuzzy_current IS medium;
-	RULE 8 : IF sec_fuzzy_temperature IS warm AND sec_fuzzy_soc IS charged THEN sec_fuzzy_current IS low;
-	
-	// temperature cold
-	RULE 9 : IF sec_fuzzy_temperature IS cold THEN sec_fuzzy_current IS low;
-	RULE 10 : IF sec_fuzzy_temperature IS cold AND sec_fuzzy_soc IS discharged THEN sec_fuzzy_current IS medium;
-	RULE 11 : IF sec_fuzzy_temperature IS cold AND sec_fuzzy_soc IS charging THEN sec_fuzzy_current IS medium;
-	RULE 12 : IF sec_fuzzy_temperature IS cold AND sec_fuzzy_soc IS charged THEN sec_fuzzy_current IS low;
-	*/
 	
 END_RULEBLOCK
 
