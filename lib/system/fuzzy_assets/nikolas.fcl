@@ -1,0 +1,108 @@
+/*
+	Fuzzy logic Nikolas Descriptor
+	Version: CAGE
+	Model: G925I
+	Date: 20/04/2018
+*/
+
+FUNCTION_BLOCK Nikolas_motor_speed // Block definition (there may be more than one block per file)
+
+// Define input variables
+VAR_INPUT				
+	right_sensor 		: REAL;
+	right_middle_sensor	: REAL;
+	left_midle_sensor	: REAL;
+	left_sensor 		: REAL;
+END_VAR
+
+// Define output variable
+VAR_OUTPUT				
+	motor_left	: REAL;
+	motor_right	: REAL;
+END_VAR
+
+FUZZIFY right_sensor		
+	TERM offline := (0, 1) (256, 1) (512, 0); 
+	TERM warning := (256, 0) (512, 1) (768, 0);
+	TERM online := (512, 0) (768, 1) (1024, 1);
+END_FUZZIFY
+
+FUZZIFY right_middle_sensor		
+	TERM offline := (0, 1) (256, 1) (512, 0); 
+	TERM warning := (256, 0) (512, 1) (768, 0);
+	TERM online := (512, 0) (768, 1) (1024, 1);
+END_FUZZIFY
+
+FUZZIFY left_midle_sensor	
+	TERM offline := (0, 1) (256, 1) (512, 0); 
+	TERM warning := (256, 0) (512, 1) (768, 0);
+	TERM online := (512, 0) (768, 1) (1024, 1);
+END_FUZZIFY
+
+FUZZIFY left_sensor	
+	TERM offline := (0, 1) (256, 1) (512, 0); 
+	TERM warning := (256, 0) (512, 1) (768, 0);
+	TERM online := (512, 0) (768, 1) (1024, 1);
+END_FUZZIFY
+
+DEFUZZIFY motor_left			
+	TERM slow := (0,1) (64,1) (128,0);
+	TERM normal := (64,0) (128,1) (192,0);
+	TERM fast := (128,0) (192,1) (255,1);
+	METHOD : COG;		// Use 'Center Of Gravity' defuzzification method
+	DEFAULT := 0;		// Default value is 0 (if no rule activates defuzzifier)
+END_DEFUZZIFY
+
+DEFUZZIFY motor_right			
+	TERM slow := (0,1) (64,1) (128,0);
+	TERM normal := (64,0) (128,1) (192,0);
+	TERM fast := (128,0) (192,1) (255,1);
+	METHOD : COG;		// Use 'Center Of Gravity' defuzzification method
+	DEFAULT := 0;		// Default value is 0 (if no rule activates defuzzifier)
+END_DEFUZZIFY
+
+// Inference rules
+RULEBLOCK No1
+	AND : MIN;	// Use 'min' for 'and'
+	ACT : MIN;	// Use 'min' activation method
+	ACCU : MAX;	// Use 'max' accumulation method
+
+	// online left
+	RULE 1 :
+		IF right_sensor IS online AND 
+			right_middle_sensor IS online AND
+			left_midle_sensor IS online AND
+			left_sensor IS online THEN 
+				motor_left IS fast;
+
+	// online right
+	RULE 2 :
+		IF right_sensor IS online AND 
+			right_middle_sensor IS online AND
+			left_midle_sensor IS online AND
+			left_sensor IS online THEN 
+				motor_right IS fast;
+
+	/*
+	// temperature ok (the best scenario)
+	RULE 1 : IF sec_fuzzy_temperature IS ok THEN sec_fuzzy_current IS high;
+	RULE 2 : IF sec_fuzzy_temperature IS ok AND sec_fuzzy_soc IS discharged THEN sec_fuzzy_current IS high;
+	RULE 3 : IF sec_fuzzy_temperature IS ok AND sec_fuzzy_soc IS charging THEN sec_fuzzy_current IS medium;
+	RULE 4 : IF sec_fuzzy_temperature IS ok AND sec_fuzzy_soc IS charged THEN sec_fuzzy_current IS medium;
+	
+	// temperature warm
+	RULE 5 : IF sec_fuzzy_temperature IS warm THEN sec_fuzzy_current IS low;
+	RULE 6 : IF sec_fuzzy_temperature IS warm AND sec_fuzzy_soc IS discharged THEN sec_fuzzy_current IS low;
+	RULE 7 : IF sec_fuzzy_temperature IS warm AND sec_fuzzy_soc IS charging THEN sec_fuzzy_current IS medium;
+	RULE 8 : IF sec_fuzzy_temperature IS warm AND sec_fuzzy_soc IS charged THEN sec_fuzzy_current IS low;
+	
+	// temperature cold
+	RULE 9 : IF sec_fuzzy_temperature IS cold THEN sec_fuzzy_current IS low;
+	RULE 10 : IF sec_fuzzy_temperature IS cold AND sec_fuzzy_soc IS discharged THEN sec_fuzzy_current IS medium;
+	RULE 11 : IF sec_fuzzy_temperature IS cold AND sec_fuzzy_soc IS charging THEN sec_fuzzy_current IS medium;
+	RULE 12 : IF sec_fuzzy_temperature IS cold AND sec_fuzzy_soc IS charged THEN sec_fuzzy_current IS low;
+	*/
+	
+END_RULEBLOCK
+
+END_FUNCTION_BLOCK

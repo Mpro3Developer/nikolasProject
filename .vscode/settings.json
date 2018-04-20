@@ -1,0 +1,11 @@
+{
+    "terminal.integrated.env.linux": {
+        "PATH": "/home/matheus/.platformio/penv/bin:/home/matheus/.platformio/penv:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin",
+        "PLATFORMIO_CALLER": "vscode"
+    },
+    "files.associations": {
+        "tcrt5000.h": "c",
+        "l9110s.h": "c",
+        "arduino.h": "c"
+    }
+}
